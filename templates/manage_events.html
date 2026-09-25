@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Manage Events - College Event Management System{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <h3 class="fw-bold mb-0">Manage Events</h3>
+  <a href="{{ url_for('add_event') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Event</a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th><th>Title</th><th>Category</th><th>Date</th>
+          <th>Venue</th><th>Coordinator</th><th>Regs</th><th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in events %}
+        <tr>
+          <td>{{ e.id }}</td>
+          <td><strong>{{ e.title }}</strong></td>
+          <td><span class="badge bg-secondary">{{ e.category }}</span></td>
+          <td>{{ e.event_date }}</td>
+          <td>{{ e.venue }}</td>
+          <td>{{ e.coordinator_name or 'TBA' }}</td>
+          <td>{{ e.reg_count }}/{{ e.max_participants }}</td>
+          <td>
+            <span class="badge bg-{% if e.status == 'Open' %}success{% elif e.status == 'Cancelled' %}danger{% elif e.status == 'Completed' %}primary{% else %}secondary{% endif %}">
+              {{ e.status }}
+            </span>
+          </td>
+          <td class="text-end text-nowrap">
+            <a href="{{ url_for('event_details', event_id=e.id) }}" class="btn btn-sm btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
+            <a href="{{ url_for('edit_event', event_id=e.id) }}" class="btn btn-sm btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>
+            <a href="{{ url_for('participants', event_id=e.id) }}" class="btn btn-sm btn-outline-success" title="Participants"><i class="bi bi-people"></i></a>
+            <form method="post" action="{{ url_for('delete_event', event_id=e.id) }}" class="d-inline"
+                  onsubmit="return confirm('Delete this event? All registrations will be removed.');">
+              <button class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9" class="text-center text-muted py-4">No events found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

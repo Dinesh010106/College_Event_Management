@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Coordinator Dashboard - College Event Management System{% endblock %}
+{% block content %}
+<div class="page-head mb-4">
+  <h3 class="fw-bold">Coordinator Dashboard</h3>
+  <p>Manage your assigned events</p>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e9f0ff;color:#0b5ed7;"><i class="bi bi-calendar-check"></i></div>
+        <h4 class="mb-0">{{ assigned|length }}</h4>
+        <small class="text-muted">Assigned Events</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e7f6ef;color:#16a34a;"><i class="bi bi-people"></i></div>
+        <h4 class="mb-0">{{ participant_count }}</h4>
+        <small class="text-muted">Participants</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#fdf3df;color:#f59e0b;"><i class="bi bi-hourglass-split"></i></div>
+        <h4 class="mb-0">{{ upcoming_count }}</h4>
+        <small class="text-muted">Upcoming Events</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e3f2fd;color:#0a69c2;"><i class="bi bi-clipboard-check"></i></div>
+        <h4 class="mb-0">{{ status_map.get('Completed', 0) }}</h4>
+        <small class="text-muted">Completed</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-header bg-white border-0 pt-3">
+    <h5 class="fw-bold mb-0">Assigned Events</h5>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Event</th><th>Category</th><th>Date</th><th>Venue</th>
+          <th>Status</th><th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in assigned %}
+        <tr>
+          <td><strong>{{ e.title }}</strong></td>
+          <td><span class="badge bg-secondary">{{ e.category }}</span></td>
+          <td>{{ e.event_date }}</td>
+          <td>{{ e.venue }}</td>
+          <td>
+            <form method="post" action="{{ url_for('coordinator_update_status', event_id=e.id) }}" class="d-flex gap-1">
+              <select name="status" class="form-select form-select-sm w-auto">
+                {% for s in ['Upcoming','Open','Closed','Ongoing','Completed','Cancelled'] %}
+                <option value="{{ s }}" {% if e.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-sm btn-outline-primary" type="submit">Set</button>
+            </form>
+          </td>
+          <td class="text-end text-nowrap">
+            <a href="{{ url_for('event_details', event_id=e.id) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+            <a href="{{ url_for('coordinator_participants', event_id=e.id) }}" class="btn btn-sm btn-outline-success"><i class="bi bi-people"></i></a>
+            <a href="{{ url_for('coordinator_edit_event', event_id=e.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+            <a href="{{ url_for('coordinator_add_result', event_id=e.id) }}" class="btn btn-sm btn-outline-warning"><i class="bi bi-trophy"></i></a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-muted">No events assigned to you.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

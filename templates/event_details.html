@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }} - College Event Management System{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('events') }}"><i class="bi bi-house me-1"></i>Events</a></li>
+    <li class="breadcrumb-item active">{{ event.title }}</li>
+  </ol>
+</nav>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+          <div>
+            <span class="badge bg-primary me-1">{{ event.category }}</span>
+            <span class="badge bg-{% if event.status == 'Open' %}success{% elif event.status == 'Cancelled' %}danger{% else %}secondary{% endif %}">{{ event.status }}</span>
+          </div>
+          {% if current_user and current_user.role == 'admin' %}
+          <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil me-1"></i>Edit</a>
+          {% endif %}
+        </div>
+        <h2 class="fw-bold">{{ event.title }}</h2>
+        <p class="text-muted mt-3" style="white-space: pre-line;">{{ event.description }}</p>
+
+        <div class="row g-3 mt-2">
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-calendar3 me-1"></i> <strong>Event Date</strong>
+              <div class="tile-value">{{ event.event_date }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-clock me-1"></i> <strong>Time</strong>
+              <div class="tile-value">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-geo-alt me-1"></i> <strong>Venue</strong>
+              <div class="tile-value">{{ event.venue }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-person me-1"></i> <strong>Coordinator</strong>
+              <div class="tile-value">{{ event.coordinator_name or 'TBA' }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-people me-1"></i> <strong>Participants</strong>
+              <div class="tile-value">{{ event.reg_count }} / {{ event.max_participants }} seats</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="detail-tile">
+              <i class="bi bi-hourglass-split me-1"></i> <strong>Registration Deadline</strong>
+              <div class="tile-value">{{ event.registration_deadline or 'N/A' }}</div>
+            </div>
+          </div>
+        </div>
+
+        {% if results %}
+        <hr class="my-4">
+        <h5 class="section-title fw-bold mb-3"><i class="bi bi-trophy me-1 text-warning"></i>Results</h5>
+        <div class="table-responsive">
+          <table class="table table-hover table-sm">
+            <thead><tr><th>Position</th><th>Student</th><th>Reg No</th></tr></thead>
+            <tbody>
+              {% for r in results %}
+              <tr><td><span class="badge bg-warning text-dark">{{ r.position }}</span></td><td>{{ r.student_name }}</td><td>{{ r.student_reg_no }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {% if registered %}
+        <hr class="my-4">
+        <h5 class="section-title fw-bold mb-3"><i class="bi bi-people me-1 text-primary"></i>Registered Students ({{ registered|length }})</h5>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th><th>Student Name</th><th>Email</th>
+                <th>Registration ID</th><th>Registered At</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in registered %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ r.student_name }}</strong></td>
+                <td>{{ r.student_email }}</td>
+                <td><code>{{ r.registration_id }}</code></td>
+                <td>{{ r.registered_at }}</td>
+                <td><span class="badge bg-success">{{ r.status }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm register-panel mb-3">
+      <div class="card-body text-center p-4">
+        {% if my_reg %}
+          <i class="bi bi-check-circle-fill fs-1 text-success"></i>
+          <h5 class="fw-bold mt-2">Already Registered</h5>
+          <p class="text-muted small mb-1">Your Registration ID</p>
+          <div class="mb-2"><code class="fs-6">{{ my_reg.registration_id }}</code></div>
+          <span class="badge bg-success">{{ my_reg.status }}</span>
+          <a href="{{ url_for('my_events') }}" class="btn btn-outline-primary w-100 mt-3">View My Events</a>
+        {% elif current_user and current_user.role == 'student' %}
+          {% if event.status == 'Cancelled' %}
+            <div class="alert alert-danger mb-0"><i class="bi bi-x-circle me-1"></i>This event has been cancelled.</div>
+          {% elif event.reg_count >= event.max_participants %}
+            <div class="alert alert-warning mb-0"><i class="bi bi-exclamation-triangle me-1"></i>This event is full.</div>
+          {% elif event.registration_deadline and event.registration_deadline < today %}
+            <div class="alert alert-warning mb-0"><i class="bi bi-exclamation-triangle me-1"></i>Registration deadline has passed.</div>
+          {% else %}
+            <h5 class="fw-bold">Register for this Event</h5>
+            <p class="text-muted small">Only {{ event.max_participants - event.reg_count }} seats left</p>
+            <div class="event-seats mb-3">
+              {% set pct = (event.reg_count * 100 / event.max_participants) if event.max_participants else 0 %}
+              <span style="width: {{ pct|round }}%"></span>
+            </div>
+            <form method="post" action="{{ url_for('event_register', event_id=event.id) }}"
+                  onsubmit="return confirm('Confirm your registration?');">
+              <button class="btn btn-primary w-100 py-2 fw-semibold" type="submit">
+                <i class="bi bi-pencil-square me-1"></i> Register Now
+              </button>
+            </form>
+          {% endif %}
+        {% elif not current_user %}
+          <h5 class="fw-bold">Want to join?</h5>
+          <p class="text-muted small">Login as a student to register for this event.</p>
+          <a href="{{ url_for('login') }}" class="btn btn-primary w-100">Login to Register</a>
+          <a href="{{ url_for('register') }}" class="btn btn-outline-primary w-100 mt-2">Create Account</a>
+        {% else %}
+          <div class="alert alert-info mb-0">Only students can register for events.</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h6 class="fw-bold mb-3">Event Information</h6>
+        <ul class="list-unstyled small mb-0">
+          <li class="mb-2"><span class="badge bg-secondary me-2">Status</span>{{ event.status }}</li>
+          <li class="mb-2"><span class="badge bg-secondary me-2">Category</span>{{ event.category }}</li>
+          <li><span class="badge bg-secondary me-2">Created</span>{{ event.created_at[:10] }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

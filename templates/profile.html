@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Profile - College Event Management System{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card border-0 shadow-sm rounded-4 text-center">
+      <div class="card-body p-4">
+        <div class="mb-3">
+          <i class="bi bi-person-circle display-3 text-primary"></i>
+        </div>
+        <h4 class="fw-bold">{{ user.name }}</h4>
+        <p class="text-muted">{{ user.email }}</p>
+        <span class="badge bg-{% if user.role == 'admin' %}danger{% elif user.role == 'coordinator' %}warning text-dark{% else %}primary{% endif %} text-capitalize">
+          {{ user.role }}
+        </span>
+        <hr>
+        <div class="row text-center">
+          <div class="col-6">
+            <h5 class="mb-0">{{ reg_count if user.role == 'student' else '-' }}</h5>
+            <small class="text-muted">Registrations</small>
+          </div>
+          <div class="col-6">
+            <h5 class="mb-0">{{ user.created_at[:10] }}</h5>
+            <small class="text-muted">Member Since</small>
+          </div>
+        </div>
+        <hr>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger w-100">
+          <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

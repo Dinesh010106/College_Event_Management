@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Register - College Event Management System{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <div class="card auth-card">
+        <div class="auth-header">
+          <i class="bi bi-person-plus-fill fs-1"></i>
+          <h4 class="fw-bold mt-2 mb-0">Student Registration</h4>
+          <p class="opacity-75 mb-0 small">Create your free account and join college events</p>
+        </div>
+        <div class="card-body p-4">
+          <form method="post" novalidate>
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
+                <input type="text" name="name" class="form-control" placeholder="Your full name" required autofocus>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-envelope"></i></span>
+                <input type="email" name="email" class="form-control" placeholder="you@college.com" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="bi bi-key"></i></span>
+                  <input type="password" name="password" class="form-control" placeholder="Min 6 characters" required>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Confirm Password</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="bi bi-key-fill"></i></span>
+                  <input type="password" name="confirm_password" class="form-control" placeholder="Repeat password" required>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100 py-2 fw-semibold" type="submit">
+              <i class="bi bi-person-plus me-1"></i> Create Account
+            </button>
+          </form>
+          <p class="text-center mt-3 mb-0 small">
+            Already have an account? <a href="{{ url_for('login') }}" class="fw-semibold">Login</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

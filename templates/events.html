@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Events - College Event Management System{% endblock %}
+{% block content %}
+<div class="page-head mb-4">
+  <h3 class="fw-bold">College Events</h3>
+  <p>Discover and register for exciting college events</p>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4" style="background:linear-gradient(120deg,#0a3a92,#0b5ed7);">
+  <div class="card-body p-4">
+    <form class="row g-2" method="get">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" name="q" class="form-control" placeholder="Search events, venue..." value="{{ search }}">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <select name="category" class="form-select">
+          <option value="">All Categories</option>
+          {% for c in categories %}
+          <option value="{{ c }}" {% if selected_category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3 d-grid">
+        <button class="btn btn-warning fw-semibold" type="submit"><i class="bi bi-search me-1"></i> Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for event in events %}
+  {% set pct = (event.reg_count * 100 / event.max_participants) if event.max_participants else 0 %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card event-card h-100">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-primary">{{ event.category }}</span>
+          <span class="badge bg-{% if event.status == 'Open' %}success{% elif event.status == 'Cancelled' %}danger{% else %}secondary{% endif %}">{{ event.status }}</span>
+        </div>
+        <div class="d-flex gap-3 align-items-center mb-3">
+          <div class="event-date-box">
+            <span class="d">{{ event.event_date[8:10] }}</span>
+            <span class="m">{{ event.event_date[5:7] }}</span>
+          </div>
+          <div>
+            <h5 class="card-title fw-bold mb-1">{{ event.title }}</h5>
+            <p class="event-meta mb-0"><i class="bi bi-clock me-1"></i>{{ event.start_time }}</p>
+          </div>
+        </div>
+        <p class="card-text event-meta flex-grow-1">
+          {{ event.description[:100] }}{% if event.description|length > 100 %}...{% endif %}
+        </p>
+        <div class="d-flex justify-content-between event-meta mb-2">
+          <span><i class="bi bi-geo-alt me-1"></i>{{ event.venue }}</span>
+          <span><i class="bi bi-people me-1"></i>{{ event.reg_count }}/{{ event.max_participants }}</span>
+        </div>
+        <div class="event-seats mb-3">
+          <span style="width: {{ pct|round }}%"></span>
+        </div>
+        <a href="{{ url_for('event_details', event_id=event.id) }}" class="btn btn-outline-primary w-100 mt-auto">
+          View Details <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No events found. Try a different search.</p>
+  {% endfor %}
+</div>
+{% endblock %}

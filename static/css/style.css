@@ -1,0 +1,445 @@
+/* ==========================================================================
+   College Event Management System - Professional Theme
+   ========================================================================== */
+:root {
+  --cems-primary: #0b5ed7;
+  --cems-primary-dark: #093d8f;
+  --cems-primary-light: #e9f0ff;
+  --cems-dark: #13294b;
+  --cems-gray: #6c7a94;
+  --cems-bg: #f5f7fb;
+  --cems-border: #e5eaf3;
+  --cems-success: #16a34a;
+  --cems-warning: #f59e0b;
+  --cems-danger: #dc2626;
+  --cems-radius: 14px;
+  --cems-shadow: 0 6px 24px rgba(15, 40, 90, 0.08);
+  --cems-shadow-lg: 0 14px 40px rgba(15, 40, 90, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+  background: var(--cems-bg);
+  color: #22314e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+main { flex: 1; }
+
+h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: 'Poppins', sans-serif; }
+
+a { text-decoration: none; }
+
+/* --------------------------------------------------------------------------
+   Navbar
+   -------------------------------------------------------------------------- */
+.navbar {
+  background: linear-gradient(90deg, #0b3a8f 0%, #0b5ed7 55%, #1274f0 100%) !important;
+  box-shadow: 0 4px 18px rgba(11, 62, 143, 0.25);
+  padding: 0.7rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-brand .brand-badge {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+}
+
+.navbar .nav-link {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.navbar .dropdown-menu {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--cems-shadow-lg);
+}
+
+.navbar .dropdown-item {
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.navbar .dropdown-item:hover { background: var(--cems-primary-light); }
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0b5ed7, #0a3f9e);
+  border: none;
+  box-shadow: 0 4px 14px rgba(11, 94, 215, 0.3);
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(11, 94, 215, 0.4); }
+
+.btn-outline-primary {
+  color: var(--cems-primary);
+  border: 1.5px solid var(--cems-primary);
+}
+
+.btn-outline-primary:hover { background: var(--cems-primary); border-color: var(--cems-primary); }
+
+.btn-outline-secondary, .btn-outline-success, .btn-outline-danger, .btn-outline-warning {
+  border-width: 1.5px;
+}
+
+/* --------------------------------------------------------------------------
+   Cards
+   -------------------------------------------------------------------------- */
+.card {
+  border: 1px solid var(--cems-border);
+  border-radius: var(--cems-radius);
+  box-shadow: var(--cems-shadow);
+}
+
+.card-header {
+  border-bottom: 1px solid var(--cems-border);
+  background: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Hero section
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.12) 0, transparent 38%),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,0.08) 0, transparent 42%),
+    linear-gradient(125deg, #0a3a92 0%, #0b5ed7 48%, #1c7ef3 100%);
+  border-radius: 22px;
+  box-shadow: var(--cems-shadow-lg);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.14) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
+  opacity: 0.35;
+}
+
+.hero > * { position: relative; z-index: 1; }
+
+.hero .hero-chip {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+/* --------------------------------------------------------------------------
+   Section titles
+   -------------------------------------------------------------------------- */
+.section-title {
+  font-weight: 700;
+  color: var(--cems-dark);
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--cems-primary), #38bdf8);
+}
+
+.text-center.section-title::after { left: 50%; transform: translateX(-50%); }
+
+/* --------------------------------------------------------------------------
+   Stat cards
+   -------------------------------------------------------------------------- */
+.stat-card {
+  border-radius: var(--cems-radius);
+  border: 1px solid var(--cems-border);
+  box-shadow: var(--cems-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cems-primary), #38bdf8);
+}
+
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--cems-shadow-lg); }
+
+.stat-card .stat-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  font-size: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Event cards
+   -------------------------------------------------------------------------- */
+.event-card {
+  border-radius: var(--cems-radius);
+  border: 1px solid var(--cems-border);
+  box-shadow: none;
+  transition: all 0.25s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--cems-shadow-lg);
+  border-color: #cfe0ff;
+}
+
+.event-card .event-date-box {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--cems-primary), #38bdf8);
+  color: #fff;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.event-card .event-date-box .d { font-size: 1.45rem; }
+.event-card .event-date-box .m { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.event-meta { font-size: 0.84rem; color: var(--cems-gray); }
+
+.event-seats {
+  height: 6px;
+  border-radius: 6px;
+  background: #e9eef7;
+  overflow: hidden;
+}
+
+.event-seats > span {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+/* --------------------------------------------------------------------------
+   Badges
+   -------------------------------------------------------------------------- */
+.badge { font-weight: 500; letter-spacing: 0.3px; }
+
+.badge.bg-primary { background: var(--cems-primary) !important; }
+
+.badge.bg-success { background: var(--cems-success) !important; }
+
+.badge.bg-warning { background: var(--cems-warning) !important; }
+
+.badge.bg-danger { background: var(--cems-danger) !important; }
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
+.form-control, .form-select {
+  border-radius: 10px;
+  border: 1.5px solid #dbe3f0;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.92rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--cems-primary);
+  box-shadow: 0 0 0 0.2rem rgba(11, 94, 215, 0.12);
+}
+
+.form-label { font-weight: 500; font-size: 0.85rem; margin-bottom: 0.35rem; }
+
+.auth-card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: var(--cems-shadow-lg);
+}
+
+.auth-card .auth-header {
+  background: linear-gradient(120deg, #0a3a92, #0b5ed7);
+  border-radius: 18px 18px 0 0;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+.table thead th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #5b6b8c;
+  background: #f2f6fc;
+  border-bottom: 2px solid #e2e9f5 !important;
+  white-space: nowrap;
+}
+
+.table td { font-size: 0.9rem; color: #33415e; }
+
+.table-hover tbody tr:hover { background: #f6faff; }
+
+code {
+  background: var(--cems-primary-light);
+  color: #0a3f9e;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   Alerts
+   -------------------------------------------------------------------------- */
+.alert { border: none; border-radius: 12px; font-size: 0.9rem; }
+
+.alert-success { background: #e8f7ee; color: #14532d; }
+.alert-danger { background: #feecec; color: #7f1d1d; }
+.alert-warning { background: #fdf1dd; color: #78350f; }
+.alert-info { background: #e3f2fd; color: #0c4a6e; }
+
+/* --------------------------------------------------------------------------
+   Detail tiles on event page
+   -------------------------------------------------------------------------- */
+.detail-tile {
+  background: #f6f9fe;
+  border: 1px solid var(--cems-border);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+}
+
+.detail-tile i { color: var(--cems-primary); font-size: 1.05rem; }
+
+.detail-tile .tile-value { color: #2b3a5c; font-size: 0.92rem; margin-top: 0.15rem; }
+
+/* --------------------------------------------------------------------------
+   Register sidebar panel
+   -------------------------------------------------------------------------- */
+.register-panel {
+  background: linear-gradient(150deg, #ffffff, #f0f6ff);
+  border: 1.5px dashed #b9cdf0;
+  border-radius: var(--cems-radius);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+footer {
+  margin-top: auto;
+  background: linear-gradient(90deg, #0a2a66 0%, #0a3a92 55%, #0b5ed7 100%) !important;
+}
+
+footer a { color: #cfe0ff; }
+footer a:hover { color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Breadcrumb
+   -------------------------------------------------------------------------- */
+.breadcrumb {
+  background: #fff;
+  border: 1px solid var(--cems-border);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+}
+
+.breadcrumb a { color: var(--cems-primary); font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   Auth background wrapper
+   -------------------------------------------------------------------------- */
+.auth-page {
+  background: linear-gradient(120deg, #eaf2ff 0%, #f5f7fb 40%, #fdf4ff 100%);
+  border-radius: 22px;
+  padding: 3rem 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Page footer credit strip
+   -------------------------------------------------------------------------- */
+.page-head {
+  border-left: 5px solid var(--cems-primary);
+  padding-left: 1rem;
+}
+
+.page-head h3 { margin-bottom: 0; }
+.page-head p { margin-bottom: 0; color: var(--cems-gray); font-size: 0.9rem; }
+
+/* --------------------------------------------------------------------------
+   Scrollbar
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: #eef2f8; }
+::-webkit-scrollbar-thumb { background: #b8c6dd; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #93a8c9; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+  .hero { padding: 2.4rem 1.2rem !important; }
+  .hero h1 { font-size: 1.45rem; }
+  body { font-size: 0.9rem; }
+}

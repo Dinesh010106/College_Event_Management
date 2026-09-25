@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Edit Event - College Event Management System{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">{{ 'Edit Event' if not coordinator_mode else 'Update My Event' }}</h3>
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+    <form method="post">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label fw-semibold">Event Title *</label>
+          <input type="text" name="title" class="form-control" required value="{{ event.title }}">
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea name="description" class="form-control" rows="4">{{ event.description }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Category</label>
+          <select name="category" class="form-select">
+            {% for c in categories %}
+            <option value="{{ c }}" {% if event.category == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Status</label>
+          <select name="status" class="form-select">
+            {% for s in statuses %}
+            <option value="{{ s }}" {% if event.status == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Event Date *</label>
+          <input type="date" name="event_date" class="form-control" required value="{{ event.event_date }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Start Time</label>
+          <input type="time" name="start_time" class="form-control" value="{{ event.start_time }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">End Time</label>
+          <input type="time" name="end_time" class="form-control" value="{{ event.end_time }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Venue</label>
+          <input type="text" name="venue" class="form-control" value="{{ event.venue }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Max Participants</label>
+          <input type="number" name="max_participants" class="form-control" min="1" value="{{ event.max_participants }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Registration Deadline</label>
+          <input type="date" name="registration_deadline" class="form-control" value="{{ event.registration_deadline }}">
+        </div>
+        {% if not coordinator_mode %}
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Coordinator</label>
+          <select name="coordinator_id" class="form-select">
+            <option value="">-- None --</option>
+            {% for c in coordinators %}
+            <option value="{{ c.id }}" {% if event.coordinator_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <div class="col-12 d-flex gap-2">
+          <button class="btn btn-primary px-4" type="submit"><i class="bi bi-save me-1"></i>Update Event</button>
+          <a href="{{ url_for('coordinator_dashboard' if coordinator_mode else 'manage_events') }}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

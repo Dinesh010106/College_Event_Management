@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}College Event Management System{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link href="{{ url_for('static', filename='vendor/poppins.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+        <span class="brand-badge"><i class="bi bi-calendar-event-fill"></i></span>
+        <span>College Event Management</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('events') }}">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('results_page') }}">Results</a></li>
+          {% if current_user %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('notifications') }}">
+              Notifications {% if notif_count %}<span class="badge bg-danger">{{ notif_count }}</span>{% endif %}
+            </a></li>
+          {% endif %}
+          {% if current_user and current_user.role == 'student' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('my_events') }}">My Events</a></li>
+          {% endif %}
+          {% if current_user and current_user.role == 'admin' %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admin</a>
+              <ul class="dropdown-menu">
+                <li><h6 class="dropdown-header">Administration</h6></li>
+                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('manage_events') }}"><i class="bi bi-calendar-check me-2"></i>Manage Events</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('add_event') }}"><i class="bi bi-plus-circle me-2"></i>Add Event</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('participants') }}"><i class="bi bi-people me-2"></i>Participants</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('manage_students') }}"><i class="bi bi-person-lines-fill me-2"></i>Manage Students</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('add_notification') }}"><i class="bi bi-bell me-2"></i>Add Notification</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('add_result') }}"><i class="bi bi-trophy me-2"></i>Add Result</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('notifications') }}"><i class="bi bi-bell-fill me-2"></i>View Notifications</a></li>
+              </ul>
+            </li>
+          {% endif %}
+          {% if current_user and current_user.role == 'coordinator' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('coordinator_dashboard') }}">Coordinator Panel</a></li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav align-items-lg-center gap-lg-1">
+          {% if current_user %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('profile') }}">
+                <i class="bi bi-person-circle me-1"></i>{{ current_user.name }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-warning" href="{{ url_for('logout') }}">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a></li>
+            <li class="nav-item"><a class="btn btn-warning btn-sm fw-semibold ms-lg-2 mt-1 mt-lg-0" href="{{ url_for('register') }}"><i class="bi bi-person-plus me-1"></i>Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-white py-5">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+          <h5 class="fw-bold mb-1">
+            <i class="bi bi-calendar-event-fill me-1"></i> College Event Management System
+          </h5>
+          <p class="opacity-75 small mb-0">"Discover. Register. Participate. Achieve."</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <div class="d-inline-flex gap-3">
+            <a href="{{ url_for('index') }}" class="small opacity-75"><i class="bi bi-house me-1"></i>Home</a>
+            <a href="{{ url_for('events') }}" class="small opacity-75"><i class="bi bi-calendar3 me-1"></i>Events</a>
+            <a href="{{ url_for('results_page') }}" class="small opacity-75"><i class="bi bi-trophy me-1"></i>Results</a>
+            {% if not current_user %}
+            <a href="{{ url_for('login') }}" class="small opacity-75"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12 text-center border-top border-white border-opacity-25 pt-3">
+          <p class="small opacity-75 mb-0">&copy; 2026 College Event Management System &middot; Built with Python Flask &amp; SQLite</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='vendor/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

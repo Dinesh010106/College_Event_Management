@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Login - College Event Management System{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card auth-card">
+        <div class="auth-header">
+          <i class="bi bi-shield-lock-fill fs-1"></i>
+          <h4 class="fw-bold mt-2 mb-0">Welcome Back</h4>
+          <p class="opacity-75 mb-0 small">Login to access your account</p>
+        </div>
+        <div class="card-body p-4">
+          <form method="post" novalidate>
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-envelope"></i></span>
+                <input type="email" name="email" class="form-control" placeholder="you@college.com" required autofocus>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-key"></i></span>
+                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100 py-2 fw-semibold" type="submit">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </button>
+          </form>
+          <p class="text-center mt-3 mb-0 small">
+            New student? <a href="{{ url_for('register') }}" class="fw-semibold">Create an account</a>
+          </p>
+          <hr class="my-3">
+          <div class="small text-muted text-center">
+            <strong>Demo Admin:</strong> admin@college.com / admin123
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

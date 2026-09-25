@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Add Event - College Event Management System{% endblock %}
+{% block content %}
+<h3 class="fw-bold mb-4">Add New Event</h3>
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+    <form method="post">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label fw-semibold">Event Title *</label>
+          <input type="text" name="title" class="form-control" required
+                 value="{{ form.get('title', '') }}" placeholder="e.g. Cyber Security Workshop">
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea name="description" class="form-control" rows="4"
+                    placeholder="Event description...">{{ form.get('description', '') }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Category</label>
+          <select name="category" class="form-select">
+            {% for c in categories %}
+            <option value="{{ c }}" {% if form.get('category') == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Status</label>
+          <select name="status" class="form-select">
+            {% for s in statuses %}
+            <option value="{{ s }}" {% if form.get('status') == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Event Date *</label>
+          <input type="date" name="event_date" class="form-control" required
+                 value="{{ form.get('event_date', '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Start Time</label>
+          <input type="time" name="start_time" class="form-control" value="{{ form.get('start_time', '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">End Time</label>
+          <input type="time" name="end_time" class="form-control" value="{{ form.get('end_time', '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Venue</label>
+          <input type="text" name="venue" class="form-control" value="{{ form.get('venue', '') }}" placeholder="Hall / Lab name">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Max Participants</label>
+          <input type="number" name="max_participants" class="form-control" min="1"
+                 value="{{ form.get('max_participants', 50) }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Registration Deadline</label>
+          <input type="date" name="registration_deadline" class="form-control"
+                 value="{{ form.get('registration_deadline', '') }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Coordinator</label>
+          <select name="coordinator_id" class="form-select">
+            <option value="">-- None --</option>
+            {% for c in coordinators %}
+            <option value="{{ c.id }}" {% if form.get('coordinator_id') == c.id|string %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-12 d-flex gap-2">
+          <button class="btn btn-primary px-4" type="submit"><i class="bi bi-save me-1"></i>Save Event</button>
+          <a href="{{ url_for('manage_events') }}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

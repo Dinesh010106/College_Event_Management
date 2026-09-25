@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - College Event Management System{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+  <div class="page-head">
+    <h3 class="fw-bold">Admin Dashboard</h3>
+    <p>Overview of the event management system</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('add_event') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Event</a>
+    <a href="{{ url_for('manage_events') }}" class="btn btn-outline-primary">Manage Events</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e9f0ff;color:#0b5ed7;"><i class="bi bi-people-fill"></i></div>
+        <h4 class="mb-0">{{ total_students }}</h4>
+        <small class="text-muted">Total Students</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e7f6ef;color:#16a34a;"><i class="bi bi-calendar-event"></i></div>
+        <h4 class="mb-0">{{ total_events }}</h4>
+        <small class="text-muted">Total Events</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#fdf3df;color:#f59e0b;"><i class="bi bi-clock-history"></i></div>
+        <h4 class="mb-0">{{ upcoming }}</h4>
+        <small class="text-muted">Upcoming Events</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#e3f2fd;color:#0a69c2;"><i class="bi bi-card-checklist"></i></div>
+        <h4 class="mb-0">{{ total_reg }}</h4>
+        <small class="text-muted">Registrations</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md">
+    <div class="card stat-card h-100">
+      <div class="card-body text-center py-4">
+        <div class="stat-icon" style="background:#fdeaec;color:#dc2626;"><i class="bi bi-trophy"></i></div>
+        <h4 class="mb-0">{{ completed }}</h4>
+        <small class="text-muted">Completed</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-header bg-white border-0 pt-3">
+        <h5 class="fw-bold mb-0">Recent Events</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr><th>Title</th><th>Date</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            {% for e in recent_events %}
+            <tr>
+              <td>{{ e.title }}</td>
+              <td>{{ e.event_date }}</td>
+              <td><span class="badge bg-primary">{{ e.status }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted">No events yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-header bg-white border-0 pt-3">
+        <h5 class="fw-bold mb-0">Recent Registrations</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr><th>Student</th><th>Event</th><th>Reg ID</th></tr>
+          </thead>
+          <tbody>
+            {% for r in recent_regs %}
+            <tr>
+              <td>{{ r.student_name }}</td>
+              <td>{{ r.event_title }}</td>
+              <td><code>{{ r.registration_id }}</code></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted">No registrations yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
